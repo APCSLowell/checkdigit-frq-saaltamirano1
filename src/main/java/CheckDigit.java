@@ -1,13 +1,13 @@
 public class CheckDigit 
 {   
   /** Returns the check digit for num, as described in part (a).  
-   *  Precondition: The number of digits in num is between one and    
+   *  Precondition: The number of digits in num is between one and    
    *  six, inclusive.  
    *          num >= 0  
    */  
    public static int getCheck(int num) 
    {  
-      int count = 0;
+     int count = 0;
      for ( int i = 1; i <= getNumberOfDigits(num);i++){
        count = count + ((8-i) * getDigit(num, i));
      }
