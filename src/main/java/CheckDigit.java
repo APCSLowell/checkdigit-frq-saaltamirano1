@@ -1,62 +1,56 @@
-public class APCalendar
-{
-  /** Returns true if year is a leap year and false otherwise. */
-  private static boolean isLeapYear(int year)
-  {
-    return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
-  }
-
-
-  /** Returns the number of leap years between year1 and year2, inclusive.
-   * Precondition: 0 <= year1 <= year2
-   */
-  public static int numberOfLeapYears(int year1, int year2)
-  { 
-    int count = 0;
-    for (int i = year1; i<=year2; i++){
-      if (isLeapYear(i)){
-        count++;
+public class CheckDigit 
+{   
+  /** Returns the check digit for num, as described in part (a).  
+   *  Precondition: The number of digits in num is between one and    
+   *  six, inclusive.  
+   *          num >= 0  
+   */  
+   public static int getCheck(int num) 
+   {  
+     int count = 0;
+     for ( int i = 1; i <= getNumberOfDigits(num);i++){
+       count = count + ((8-i) * getDigit(num, i));
+     }
+     return count % 10;
+   }
+ 
+  /** Returns true if numWithCheckDigit is valid, or false    
+   *  otherwise, as described in part (b). 
+   *  Precondition: The number of digits in numWithCheckDigit   
+   *  is between two and seven, inclusive.
+   *                numWithCheckDigit >= 0     
+   */     
+   public static boolean isValid(int numWithCheckDigit)    
+   {      
+     int check = numWithCheckDigit % 10;
+     int num = numWithCheckDigit/10;
+     int newCheck = getCheck(num);
+     if (check == newCheck){
+       return true;
+     }else{
+     return false;
+     }
+   }    
+   
+   /** Returns the number of digits in num. */    
+   public static int getNumberOfDigits(int num)    
+   {      
+    if(num < 10)
+      return 1;
+    return 1 + getNumberOfDigits(num/10);    
+   }    
+   
+   /** Returns the nthdigit of num.      
+    *  Precondition: n >= 1 and n <= the number of digits in num     
+    */    
+    public static int getDigit(int num, int n)    
+    {      
+      int pos = getNumberOfDigits(num)-n+1;
+      while(pos > 1){
+        num/=10;
+        pos--;
       }
-    }
-    return count;
-  }
-  
-  /** Returns the value representing the day of the week for the first day of year,
-   *  where 0 denotes Sunday, 1 denotes Monday, ..., and 6 denotes Saturday.
-   */
-  private static int firstDayOfYear(int year)
-  {
-    /* January 1, 1980 was a Tuesday */
-      return (2 + 365*(year - 1980) + numberOfLeapYears(1980, year-1)) % 7;
-  }
+      return num%10;
+    }     
 
-  /** Returns n, where month, day, and year specify the nth day of the year.
-   *  Returns 1 for January 1 (month = 1, day = 1) of any year.
-   *  Precondition: The date represented by month, day, year is a valid date.
-   */
-  private static int dayOfYear(int month, int day, int year)
-  {
-    final int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int n = day;
-    int mth  = 1;
-    while (mth < month)
-    {
-      n += daysInMonth[mth - 1];
-      mth++;
-    }
-    if (mth > 2 && isLeapYear(year))
-      n++;
-    return n;
-  }
-  
-  /** Returns the value representing the day of the week for the given date
-   *  (month, day, year), where 0 denotes Sunday, 1 denotes Monday, ...,
-   *  and 6 denotes Saturday.
-   *  Precondition: The date represented by month, day, year is a valid date.
-   */
-  public static int dayOfWeek(int month, int day, int year)
-  {
-    int additionalDays = dayOfYear(month, day, year) - 1;
-    return (firstDayOfYear(year) + additionalDays) % 7;
-  }
 }
